@@ -26,6 +26,8 @@ class Migration(migrations.Migration):
                     ],
                 ),
             ],
+            # Table already exists. See oc_lettings_site/migrations/
+            # 0003_delete_profile.py
             database_operations=[],
         ),
     ]
