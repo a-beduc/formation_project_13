@@ -1,3 +1,11 @@
+"""
+Django urls for the 'profiles' app.
+
+Misc variables:
+    app_name
+    urlpatterns
+"""
+
 from django.urls import path
 from . import views
 
