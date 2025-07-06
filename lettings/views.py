@@ -1,3 +1,11 @@
+"""
+Django views for the 'lettings' app.
+
+Functions:
+    index(request) -> HttpResponse
+    letting(request) -> HttpResponse
+"""
+
 from django.shortcuts import render
 
 from lettings.models import Letting
@@ -7,7 +15,18 @@ from lettings.models import Letting
 # velit. Sed non placerat massa. Integer est nunc, pulvinar a tempor et,
 # bibendum id arcu. Vestibulum ante ipsum primis in faucibus orci luctus
 # et ultrices posuere cubilia curae; Cras eget scelerisque
+
 def index(request):
+    """
+    Return the HttpResponse corresponding to the lettings/
+    endpoint.
+
+        Parameters:
+            request (django.http.HttpRequest): The request object.
+
+        Returns:
+            response (django.http.HttpResponse): The HttpResponse.
+    """
     lettings_list = Letting.objects.all()
     context = {'lettings_list': lettings_list}
     return render(request, 'lettings/index.html', context)
@@ -25,7 +44,19 @@ def index(request):
 # libero, eget bibendum lorem. Sed non dolor risus. Mauris condimentum
 # auctor elementum. Donec quis nisi ligula. Integer vehicula tincidunt
 # enim, ac lacinia augue pulvinar sit amet.
+
 def letting(request, letting_id):
+    """
+    Return the HttpResponse corresponding to the lettings/<letting_id>/
+    endpoint.
+
+        Parameters:
+            request (django.http.HttpRequest): The request object.
+            letting_id (int): The letting id.
+
+        Returns:
+            response (django.http.HttpResponse): The HttpResponse.
+    """
     letting = Letting.objects.get(id=letting_id)
     context = {
         'title': letting.title,
