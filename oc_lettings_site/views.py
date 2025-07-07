@@ -1,3 +1,10 @@
+"""
+Django views for the 'oc_lettings_site' app.
+
+Functions:
+    index(request) -> HttpResponse
+"""
+
 from django.shortcuts import render
 
 
@@ -10,4 +17,13 @@ from django.shortcuts import render
 # elementum urna nisi, pellentesque iaculis enim cursus in. Praesent
 # volutpat porttitor magna, non finibus neque cursus id.
 def index(request):
+    """
+    Return the HttpResponse corresponding to the basic endpoint.
+
+        Parameters:
+            request (django.http.HttpRequest): The request object.
+
+        Returns:
+            response (django.http.HttpResponse): The HttpResponse.
+    """
     return render(request, 'index.html')
