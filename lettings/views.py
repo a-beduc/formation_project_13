@@ -5,7 +5,6 @@ Functions:
     index(request) -> HttpResponse
     letting(request) -> HttpResponse
 """
-
 from django.shortcuts import render
 
 from lettings.models import Letting

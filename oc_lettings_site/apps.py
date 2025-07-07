@@ -5,7 +5,6 @@ Classes:
 
     OCLettingsSiteConfig
 """
-
 from django.apps import AppConfig
 
 

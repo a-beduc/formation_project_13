@@ -5,11 +5,9 @@ Misc variables:
     app_name
     urlpatterns
 """
-
 from django.urls import path
 
 from . import views
-
 
 app_name = 'lettings'
 

@@ -4,7 +4,6 @@ Django views for the 'oc_lettings_site' app.
 Functions:
     index(request) -> HttpResponse
 """
-
 from django.shortcuts import render
 
 
