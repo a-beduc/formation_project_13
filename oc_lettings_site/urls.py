@@ -1,3 +1,9 @@
+"""
+Django urls for the 'oc_lettings_site' app.
+
+Misc variables:
+    urlpatterns
+"""
 from django.contrib import admin
 from django.urls import path, include
 
