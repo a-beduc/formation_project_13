@@ -6,3 +6,4 @@ oc-lettings-site_bu.sqlite3
 Pipfile
 Pipfile.lock
 .coverage
+.env

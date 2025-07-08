@@ -1,6 +1,8 @@
 import os
-
 from pathlib import Path
+
+import sentry_sdk
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +12,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s'
+# Load the .env from the project root.
+load_dotenv(dotenv_path=BASE_DIR / '.env')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError('SECRET_KEY not found in the environment')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -114,3 +120,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static",]
+
+SENTRY_DSN = os.environ.get('SENTRY_DSN')
+if not SENTRY_DSN:
+    raise ValueError('SENTRY_DSN not found in the environment')
+
+sentry_sdk.init(
+    dsn=os.environ.get('SENTRY_DSN'),
+    # Add data like request headers and IP for users,
+    # see
+    # https://docs.sentry.io/platforms/python/data-management/data-collected/
+    # for more info
+    send_default_pii=True,
+)
