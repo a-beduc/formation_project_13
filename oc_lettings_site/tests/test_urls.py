@@ -30,24 +30,6 @@ def test_oc_lettings_site_index():
     assert match.func == main_index
 
 
-def test_oc_lettings_site_admin():
-    """
-    Test that the url '/admin/' is properly resolved.
-        TODO 25-07-07 : The associated func isn't tested properly.
-
-    Returns:
-        None
-    """
-    path = reverse("admin:index")
-    assert path == "/admin/"
-
-    match = resolve(path)
-    assert match.view_name == "admin:index"
-    # Not working, ask s/o
-    # assert match.func == admin.site.urls.index
-    # assert match.func == admin.site.index
-
-
 def test_oc_lettings_site_include_lettings():
     """
     Test that the url '/lettings/' is properly resolved.

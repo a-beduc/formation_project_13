@@ -5,7 +5,7 @@ Functions:
     index(request) -> HttpResponse
     letting(request) -> HttpResponse
 """
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from profiles.models import Profile
 
@@ -46,6 +46,6 @@ def profile(request, username):
         Returns:
             response (django.http.HttpResponse): The HttpResponse.
     """
-    profile = Profile.objects.get(user__username=username)
+    profile = get_object_or_404(Profile, user__username=username)
     context = {'profile': profile}
     return render(request, 'profiles/profile.html', context)
