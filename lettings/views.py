@@ -5,7 +5,7 @@ Functions:
     index(request) -> HttpResponse
     letting(request) -> HttpResponse
 """
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from lettings.models import Letting
 
@@ -56,7 +56,8 @@ def letting(request, letting_id):
         Returns:
             response (django.http.HttpResponse): The HttpResponse.
     """
-    letting = Letting.objects.get(id=letting_id)
+    letting = get_object_or_404(Letting, id=letting_id)
+
     context = {
         'title': letting.title,
         'address': letting.address,
