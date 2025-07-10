@@ -1,8 +1,11 @@
+import logging
 import os
 from pathlib import Path
 
 import sentry_sdk
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -116,20 +119,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static",]
 
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
-if not SENTRY_DSN:
-    raise ValueError('SENTRY_DSN not found in the environment')
 
-sentry_sdk.init(
-    dsn=os.environ.get('SENTRY_DSN'),
-    # Add data like request headers and IP for users,
-    # see
-    # https://docs.sentry.io/platforms/python/data-management/data-collected/
-    # for more info
-    send_default_pii=True,
-)
+if SENTRY_DSN:
+    logging.basicConfig(level=logging.INFO)
+
+    sentry_logging = LoggingIntegration(
+        level=logging.INFO,
+        event_level=logging.ERROR
+    )
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        send_default_pii=True,
+        traces_sample_rate=1.0,
+        integrations=[
+            DjangoIntegration(),
+            sentry_logging
+        ]
+    )
