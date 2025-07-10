@@ -3,6 +3,8 @@ Django views for the 'oc_lettings_site' app.
 
 Functions:
     index(request) -> HttpResponse
+    custom_page_not_found_view(request, exception) -> HttpResponse
+    custom_error_view(request) -> HttpResponse
 """
 import logging
 
