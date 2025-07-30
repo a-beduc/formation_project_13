@@ -13,10 +13,16 @@ on:
 
 jobs:
   testing:
+    environment: CI
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    env:
+      DEBUG: ${{ vars.DEBUG }}
+      DJANGO_ALLOWED_HOSTS: ${{ vars.DJANGO_ALLOWED_HOSTS }}
+      DJANGO_SECRET_KEY: ${{ vars.DJANGO_SECRET_KEY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +39,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync --frozen --extra dev
+        run: uv sync --frozen
 
       - name: Run Pytest (coverage >= 80%)
         run: |
