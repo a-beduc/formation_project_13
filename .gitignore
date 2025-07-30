@@ -1,8 +1,9 @@
 **/__pycache__
 *.pyc
 venv
+.venv/
 .idea/
-oc-lettings-site_bu.sqlite3
+data/oc-lettings-site_bu.sqlite3
 Pipfile
 Pipfile.lock
 .coverage
