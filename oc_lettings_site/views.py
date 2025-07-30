@@ -8,10 +8,8 @@ Functions:
 """
 import logging
 
-from django.http import Http404
 from django.shortcuts import render
 from sentry_sdk import capture_message
-
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +22,7 @@ logger = logging.getLogger(__name__)
 # venenatis tempus. Aliquam vitae erat ac orci placerat luctus. Nullam
 # elementum urna nisi, pellentesque iaculis enim cursus in. Praesent
 # volutpat porttitor magna, non finibus neque cursus id.
+
 def index(request):
     """
     Return the HttpResponse corresponding to the basic endpoint.
@@ -44,6 +43,4 @@ def custom_page_not_found_view(request, exception):
 
 
 def custom_error_view(request):
-    logger.error(f"500 on {request.path}")
     return render(request, "errors/500.html", status=500)
-
