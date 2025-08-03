@@ -1,5 +1,7 @@
 # https://realpython.com/github-actions-python/
-name: Run Tests
+# https://docs.astral.sh/uv/guides/integration/github/#installation
+# https://realpython.com/github-actions-python/
+name: Run Tests and Lint
 
 on:
   push:
@@ -12,6 +14,25 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install cached uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.7.19"
+          enable-cache: true
+
+      - name: Run ruff
+        run: uvx ruff check --output-format=github
+
   testing:
     environment: CI
     runs-on: ubuntu-latest
