@@ -4,7 +4,9 @@ venv
 .venv/
 .idea/
 data/oc-lettings-site_bu.sqlite3
+data_bu/
 Pipfile
 Pipfile.lock
 .coverage
 .env
+staticfiles/
