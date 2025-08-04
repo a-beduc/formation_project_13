@@ -16,7 +16,7 @@ jobs:
     env:
       DEBUG: ${{ vars.DEBUG }}
       DJANGO_ALLOWED_HOSTS: ${{ vars.DJANGO_ALLOWED_HOSTS }}
-      DJANGO_SECRET_KEY: ${{ vars.DJANGO_SECRET_KEY }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
     steps:
       - uses: actions/checkout@v4
