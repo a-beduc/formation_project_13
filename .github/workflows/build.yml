@@ -31,7 +31,6 @@ jobs:
         with:
           images: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMAGE }}
           tags: |
-            type=ref,event=branch
             type=sha,format=short
             type=raw,value=latest
 
@@ -39,6 +38,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: ./Dockerfile.demo
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
