@@ -31,7 +31,6 @@ jobs:
         with:
           images: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMAGE }}
           tags: |
-            type=ref,event=branch
             type=sha,format=short
             type=raw,value=latest
 
