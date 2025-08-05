@@ -7,16 +7,6 @@ name: Build Container
 
 on:
   workflow_call:
-    inputs:
-      DOCKERHUB_USERNAME:
-        required: true
-        type: string
-      DOCKERHUB_REPO:
-        required: true
-        type: string
-      DOCKERHUB_IMAGE:
-        required: true
-        type: string
     secrets:
       DOCKERHUB_TOKEN:
         required: true
@@ -36,14 +26,14 @@ jobs:
       - name: Docker login
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME || inputs.DOCKERHUB_USERNAME}}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Extract metadata (tags & label) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKERHUB_REPO || inputs.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMAGE || inputs.DOCKERHUB_IMAGE }}
+          images: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMAGE }}
           tags: |
             type=sha,format=short
             type=raw,value=latest
