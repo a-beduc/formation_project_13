@@ -1,13 +1,14 @@
+
 name: CI Operator
 
 on:
-#  pull_request:
-#    branches:
-#      - master
-#  push:
-#    branches:
-#      - master
   workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
 
 jobs:
   lint:
@@ -15,7 +16,12 @@ jobs:
 
   test:
     uses: ./.github/workflows/test.yml
+    secrets:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
 
   build:
-    needs: [lint, test]
+    needs: [ lint, test]
     uses: ./.github/workflows/build.yml
+    secrets:
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

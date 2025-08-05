@@ -1,8 +1,12 @@
 # https://realpython.com/github-actions-python/
+# https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-inputs-and-secrets-in-a-reusable-workflow
 name: Tests
 
 on:
   workflow_call:
+    secrets:
+      DJANGO_SECRET_KEY:
+        required: true
   workflow_dispatch:
 
 jobs:
