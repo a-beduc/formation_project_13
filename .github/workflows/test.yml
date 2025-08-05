@@ -1,8 +1,19 @@
 # https://realpython.com/github-actions-python/
+# https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-inputs-and-secrets-in-a-reusable-workflow
 name: Tests
 
 on:
   workflow_call:
+    inputs:
+      DEBUG:
+        required: true
+        type: string
+      DJANGO_ALLOWED_HOSTS:
+        required: true
+        type: string
+    secrets:
+      DJANGO_SECRET_KEY:
+        required: true
   workflow_dispatch:
 
 jobs:
@@ -11,8 +22,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DEBUG: ${{ vars.DEBUG }}
-      DJANGO_ALLOWED_HOSTS: ${{ vars.DJANGO_ALLOWED_HOSTS }}
+      DEBUG: ${{ vars.DEBUG || inputs.DEBUG }}
+      DJANGO_ALLOWED_HOSTS: ${{ vars.DJANGO_ALLOWED_HOSTS || inputs.DJANGO_ALLOWED_HOSTS }}
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
     steps:

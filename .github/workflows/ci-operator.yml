@@ -14,8 +14,22 @@ jobs:
     uses: ./.github/workflows/lint.yml
 
   test:
+    environment: CI
     uses: ./.github/workflows/test.yml
+    with:
+      DEBUG: ${{ vars.DEBUG }}
+      DJANGO_ALLOWED_HOSTS: ${{ vars.DJANGO_ALLOWED_HOSTS }}
+    secrets:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
 
   build:
-    needs: [lint, test]
+    needs: [ lint, test]
+    environment: CI
     uses: ./.github/workflows/build.yml
+    with:
+      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      DOCKERHUB_REPO: ${{ vars.DOCKERHUB_REPO }}
+      DOCKERHUB_IMAGE: ${{ vars.DOCKERHUB_IMAGE }}
+    secrets:
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
