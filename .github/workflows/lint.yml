@@ -1,6 +1,6 @@
 # https://docs.astral.sh/uv/guides/integration/github/#installation
 # https://realpython.com/github-actions-python/
-name: Lint
+name: Run linter
 
 on:
   workflow_call:

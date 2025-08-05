@@ -1,6 +1,6 @@
 # https://realpython.com/github-actions-python/
 # https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-inputs-and-secrets-in-a-reusable-workflow
-name: Tests
+name: Run tests
 
 on:
   workflow_call:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   testing:
-    environment: CI
+    environment: production
     runs-on: ubuntu-latest
 
     env:
