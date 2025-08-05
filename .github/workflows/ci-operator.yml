@@ -1,20 +1,20 @@
+
 name: CI Operator
 
 on:
+  workflow_dispatch:
 #  pull_request:
 #    branches:
 #      - master
 #  push:
 #    branches:
 #      - master
-  workflow_dispatch:
 
 jobs:
   lint:
     uses: ./.github/workflows/lint.yml
 
   test:
-    environment: CI
     uses: ./.github/workflows/test.yml
     with:
       DEBUG: ${{ vars.DEBUG }}
@@ -25,7 +25,6 @@ jobs:
 
   build:
     needs: [ lint, test]
-    environment: CI
     uses: ./.github/workflows/build.yml
     with:
       DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
