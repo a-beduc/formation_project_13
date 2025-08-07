@@ -1,0 +1,49 @@
+name: Deploy container
+
+on:
+  workflow_call:
+    secrets:
+      RENDER_TOKEN:
+        required: true
+      DJANGO_SECRET_KEY:
+        required: true
+      DJANGO_SENTRY_DSN:
+        required: true
+  workflow_dispatch:
+
+jobs:
+  deploy-container:
+    environment: production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update render env vars
+        run: |
+          curl --request PUT \
+               --url ${{ vars.RENDER_SERVICE }}
+               --header 'accept: application/json'
+               --header 'authorization: Bearer ${{ secrets.RENDER_TOKEN }}'
+               --header 'content-type: application/json'
+               --data '
+                 [
+                   {
+                     "key": "DEBUG"
+                     "value": "False"
+                   },
+                   {
+                     "key": "DJANGO_ALLOWED_HOSTS"
+                     "value": "*"
+                   },
+                   {
+                     "key": "DJANGO_SECRET_KEY"
+                     "value": ${{ secrets.DJANGO_SECRET_KEY}}
+                   },
+                   {
+                     "key": "DJANGO_SENTRY_DSN"
+                     "value": ${{ secrets.DJANGO_SENTRY_DSN}}
+                   }
+                 ]
+               '
+      - name: Trigger deploy
+        run: |
+          curl ${{ vars.RENDER_DEPLOY_HOOK }}

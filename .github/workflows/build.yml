@@ -3,7 +3,7 @@
 # https://docs.docker.com/build/ci/github-actions/manage-tags-labels/
 # https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-inputs-and-secrets-in-a-reusable-workflow
 
-name: Build Container
+name: Build container
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-container:
-    environment: CI
+    environment: production
     runs-on: ubuntu-latest
 
     steps:
