@@ -1,3 +1,6 @@
+# https://api-docs.render.com/reference/update-env-var
+# https://stackoverflow.com/questions/8084389/bash-variable-in-single-quote
+
 name: Deploy container
 
 on:
@@ -17,33 +20,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Update render env vars
+      - name: Update secret key
         run: |
           curl --request PUT \
-               --url https://api.render.com/v1/services/${{ vars.RENDER_SERVICE }}/env-vars \
+               --url https://api.render.com/v1/services/${{ vars.RENDER_SERVICE }}/env-vars/DJANGO_SECRET_KEY \
                --header 'accept: application/json' \
                --header 'authorization: Bearer ${{ secrets.RENDER_TOKEN }}' \
                --header 'content-type: application/json' \
-               --data '
-                 [
-                   {
-                     "key": "DEBUG",
-                     "value": "False"
-                   },
-                   {
-                     "key": "DJANGO_ALLOWED_HOSTS",
-                     "value": "*"
-                   },
-                   {
-                     "key": "DJANGO_SECRET_KEY",
-                     "value": ${{ secrets.DJANGO_SECRET_KEY}}
-                   },
-                   {
-                     "key": "DJANGO_SENTRY_DSN",
-                     "value": ${{ secrets.DJANGO_SENTRY_DSN}}
-                   }
-                 ]
-               '
+               --data '{"value": "'"${{ secrets.DJANGO_SECRET_KEY}}"'"}'
+      - name: Update sentry url
+        run: |
+          curl --request PUT \
+               --url https://api.render.com/v1/services/${{ vars.RENDER_SERVICE }}/env-vars/DJANGO_SENTRY_DSN \
+               --header 'accept: application/json' \
+               --header 'authorization: Bearer ${{ secrets.RENDER_TOKEN }}' \
+               --header 'content-type: application/json' \
+               --data '{"value": "'"${{ secrets.DJANGO_SENTRY_DSN}}"'"}'
       - name: Trigger deploy
         run: |
           curl ${{ vars.RENDER_DEPLOY_HOOK }}
