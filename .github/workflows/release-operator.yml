@@ -1,0 +1,32 @@
+# Run for Push on master to ensure test pass before deployment
+
+name: Release Operator
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
+  build:
+    needs: [ lint, test]
+    uses: ./.github/workflows/build.yml
+    secrets:
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  deploy:
+    needs: [ build ]
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      RENDER_TOKEN: ${{ secrets.RENDER_TOKEN }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DJANGO_SENTRY_DSN: ${{ secrets.DJANGO_SENTRY_DSN }}
