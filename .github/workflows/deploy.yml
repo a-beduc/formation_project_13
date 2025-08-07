@@ -5,13 +5,6 @@ name: Deploy container
 
 on:
   workflow_call:
-    secrets:
-      RENDER_TOKEN:
-        required: true
-      DJANGO_SECRET_KEY:
-        required: true
-      DJANGO_SENTRY_DSN:
-        required: true
   workflow_dispatch:
 
 jobs:
@@ -20,22 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Update secret key
-        run: |
-          curl --request PUT \
-               --url https://api.render.com/v1/services/${{ vars.RENDER_SERVICE }}/env-vars/DJANGO_SECRET_KEY \
-               --header 'accept: application/json' \
-               --header 'authorization: Bearer ${{ secrets.RENDER_TOKEN }}' \
-               --header 'content-type: application/json' \
-               --data '{"value": "'"${{ secrets.DJANGO_SECRET_KEY}}"'"}'
-      - name: Update sentry url
-        run: |
-          curl --request PUT \
-               --url https://api.render.com/v1/services/${{ vars.RENDER_SERVICE }}/env-vars/DJANGO_SENTRY_DSN \
-               --header 'accept: application/json' \
-               --header 'authorization: Bearer ${{ secrets.RENDER_TOKEN }}' \
-               --header 'content-type: application/json' \
-               --data '{"value": "'"${{ secrets.DJANGO_SENTRY_DSN}}"'"}'
       - name: Trigger deploy
         run: |
           curl ${{ vars.RENDER_DEPLOY_HOOK }}
