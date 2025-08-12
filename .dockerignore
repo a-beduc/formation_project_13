@@ -35,5 +35,7 @@
 LICENSE
 README.md
 
+doc/
 data/
+data_bu/
 staticfiles/
