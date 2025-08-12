@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.demo
-    image: abeduc/oc-lettings-demo
+    image: abeduc/oc-lettings-demo:latest
     container_name: django-docker-demo
     ports:
       - "8000:8000"

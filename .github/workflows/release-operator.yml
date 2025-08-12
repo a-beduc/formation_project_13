@@ -17,12 +17,18 @@ jobs:
     secrets:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
-  build:
-    needs: [ lint, test]
-    uses: ./.github/workflows/build.yml
+  build-demo:
+    needs: [ lint, test ]
+    uses: ./.github/workflows/build-demo.yml
+    secrets:
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-clean:
+    needs: [ lint, test ]
+    uses: ./.github/workflows/build-clean.yml
     secrets:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   deploy:
-    needs: [ build ]
+    needs: [ build-demo ]
     uses: ./.github/workflows/deploy.yml

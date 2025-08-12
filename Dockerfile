@@ -45,6 +45,9 @@ COPY --from=builder /app/profiles ./profiles
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/templates ./templates
 
+# Need clean data with superuser to populate volume
+COPY --from=builder --chown=appuser /app/data_clean/clean-oc-lettings-site.sqlite3 ./data/oc-lettings-site.sqlite3
+
 RUN chmod +x /app/docker-entrypoint.sh
 ENV PATH="/app/.venv/bin:${PATH}"
 

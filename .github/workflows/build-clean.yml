@@ -3,7 +3,7 @@
 # https://docs.docker.com/build/ci/github-actions/manage-tags-labels/
 # https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-inputs-and-secrets-in-a-reusable-workflow
 
-name: Build container
+name: Build clean container
 
 on:
   workflow_call:
@@ -33,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMAGE }}
+          images: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMAGE_CLEAN }}
           tags: |
             type=sha,format=short
             type=raw,value=latest
