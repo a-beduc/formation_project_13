@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deployment &#8212; OC Lettings - Documentation 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Usage" href="usage.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="deployment">
+<h1>Deployment<a class="headerlink" href="#deployment" title="Link to this heading">¶</a></h1>
+<p>The application is deployed using:</p>
+<ul class="simple">
+<li><p><strong>Docker Hub</strong>: Two images are pushed (a clean image and a demo image).</p></li>
+<li><p><strong>Render.com</strong>: Deployment is performed directly using the latest Docker image.</p></li>
+</ul>
+<section id="ci-cd-pipeline">
+<h2>CI/CD Pipeline<a class="headerlink" href="#ci-cd-pipeline" title="Link to this heading">¶</a></h2>
+<p>The GitHub Actions pipeline is composed of <strong>three steps</strong>:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt><strong>Linting and testing</strong></dt><dd><ul class="simple">
+<li><p>Linting with <em>Ruff</em></p></li>
+<li><p>Unit testing with <em>Pytest</em> (Minimum 80% coverage).</p></li>
+<li><p>Executed on every push or pull request to the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch.</p></li>
+<li><p>If this step fails, the merge is rejected.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Build and push images</strong></dt><dd><ul class="simple">
+<li><p>Build two docker images</p></li>
+<li><p>Tag them with the commit SHA and “latest”.</p></li>
+<li><p>Push images to Docker Hub.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Deployment</strong></dt><dd><ul class="simple">
+<li><p>Trigger a deployment on Render if build is successful.</p></li>
+<li><p>Render pulls the <code class="docutils literal notranslate"><span class="pre">latest</span></code> image from DockerHub and redeploy.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+<figure class="align-default" id="id1">
+<img alt="Example of a successful GitHub Action report." src="_images/deploy-1.jpg" />
+<figcaption>
+<p><span class="caption-text">Example of a successful merge report.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="github-environment-variables">
+<h3>Github environment variables<a class="headerlink" href="#github-environment-variables" title="Link to this heading">¶</a></h3>
+<p>Create a new GitHub <strong>environment</strong> named <code class="docutils literal notranslate"><span class="pre">production</span></code></p>
+<p>Required <strong>secrets</strong>:</p>
+<ul class="simple">
+<li><p>DJANGO_SECRET_KEY: Django signing key. <a class="reference external" href="https://djecrety.ir/">Django secret key generator</a>.</p></li>
+<li><p>DJANGO_SENTRY_DSN: DSN provided by Sentry. <a class="reference external" href="https://docs.sentry.io/concepts/key-terms/dsn-explainer/">What is a DSN?</a></p></li>
+<li><p>DOCKERHUB_TOKEN: Token used to give permission to action. <a class="reference external" href="https://docs.docker.com/security/access-tokens/#create-a-personal-access-token">How to create one</a>.</p></li>
+</ul>
+<p>Required <strong>environment variables</strong>:</p>
+<ul class="simple">
+<li><p>DOCKERHUB_IMAGE_CLEAN: The name of the image (without demo data).</p></li>
+<li><p>DOCKERHUB_IMAGE_DEMO: The name of the image (with demo data).</p></li>
+<li><p>DOCKERHUB_REPO: The name of the docker repo (usually, DockerHub username).</p></li>
+<li><p>DOCKERHUB_USERNAME: Dockerhub username (to login).</p></li>
+<li><p>RENDER_DEPLOY_HOOK: Render endpoint to trigger redeploy. <a class="reference external" href="https://render.com/docs/deploy-hooks">What is a deploy hook?</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="render">
+<h2>Render<a class="headerlink" href="#render" title="Link to this heading">¶</a></h2>
+<p>To set up the application on <strong>Render</strong>.</p>
+<ol class="arabic simple">
+<li><p>Create a <strong>new Web Service</strong>.</p></li>
+<li><p>Choose <strong>Deploy from image</strong>.</p></li>
+<li><p>Configure the environment variables required by Django.</p></li>
+</ol>
+<ul class="simple">
+<li><p>DJANGO_ALLOWED_HOSTS: The hosts you want to use.</p></li>
+<li><p>DJANGO_SECRET_KEY: Django signing key. Django secret key generator.</p></li>
+<li><p>DJANGO_SENTRY_DSN: DSN provided by Sentry. <a class="reference external" href="https://docs.sentry.io/concepts/key-terms/dsn-explainer/">What is a DSN?</a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">OC Lettings - Documentation</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="specifications.html">Technical specifications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Programming interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#render">Render</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="usage.html" title="previous chapter">Usage</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, a-beduc.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/deployment.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
