@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'oc-lettings-demo'
+project = 'OC Lettings - Documentation'
 copyright = '2025, a-beduc'
 author = 'alexandre beduc'
 release = '0.1'
