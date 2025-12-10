@@ -134,8 +134,8 @@ Avec une base de donnée vide et un volume persistant.
 - `cd /formation_project_13`
 - Ajouter le .env créé précédement.
 - Construire l'image "clean" ou de démo
-  - clean: `docker build -f Dockerfile -t <docker-username>/oc-lettings:local
-  - demo: `docker build -f Dockerfile.demo -t <docker-username>/oc-lettings:local
+  - clean: `docker build -f Dockerfile -t <docker-username>/oc-lettings:local .`
+  - demo: `docker build -f Dockerfile.demo -t <docker-username>/oc-lettings-demo:local .`
 - Lancer l'image
   - clean: `docker run --env-file .env -p 8000:8000 --name oclettings abeduc/oc-lettings:local`
   - demo: `docker run --env-file .env -p 8000:8000 --name oclettings-demo abeduc/oc-lettings-demo:local`
